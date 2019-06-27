@@ -1,0 +1,32 @@
+{
+  "name": "Workday Calendar",
+  "version": "1.0.1",
+  "description": "Workday Calendar for My Absence",
+  "permissions": ["activeTab"],
+  "web_accessible_resources": [
+    "langs/en.json"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://*.myworkday.com/*"],
+      "css": [
+        "vendor/hello.week.min.css",
+        "vendor/hello.week.theme.min.css",
+        "index.css"
+      ],
+      "js": [
+        "vendor/jquery.min.js",
+        "vendor/hello.week.min.js",
+        "index.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "icons": {
+    "16": "images/workday_calendar_16.png",
+    "32": "images/workday_calendar_32.png",
+    "64": "images/workday_calendar_64.png",
+    "128": "images/workday_calendar_128.png"
+  },
+  "manifest_version": 2
+}

@@ -1,0 +1,6 @@
+.hello-week {
+    max-width: 800px;
+}
+.hello-week .day {
+    padding: 1em 0;
+}

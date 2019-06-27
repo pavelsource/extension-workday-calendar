@@ -1,0 +1,16 @@
+{
+  "name": "workday-calendar-extension",
+  "version": "1.0.1",
+  "description": "",
+  "repository": "https://github.com/ashkue/extension-workday-calendar",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pavel Morshenyuk",
+  "license": "MIT",
+  "dependencies": {
+    "hello-week": "^2.10.2",
+    "jquery": "^3.4.1"
+  }
+}

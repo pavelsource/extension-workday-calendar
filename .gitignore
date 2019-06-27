@@ -59,3 +59,8 @@ typings/
 
 # next.js build output
 .next
+
+# repo-specific ignores
+dist
+node_modules
+workday-calendar-extension.zip
