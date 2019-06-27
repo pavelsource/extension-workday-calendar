@@ -64,8 +64,8 @@
 		}
 		rows.each(function(index) {
 			let cells = $(this).find('th, td');
-			let dayParts = $(cells[mapping.date]).text().split('/');
-			let day = dayParts[2] + '-' + dayParts[1] + '-' + dayParts[0];
+			let readDay = moment($(cells[mapping.date]).text(), ["MM/DD/YYYY", "DD/MM/YYYY"]);
+			let day = readDay.format('YYYY-MM-DD');
 			dates.days.push(day);
 		});
 
