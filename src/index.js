@@ -8,8 +8,19 @@
 		'Time Off and Leave Requests'
 	];
 
+	// unfortunately extension does not have access to workday's global variable
+	// we have to search for locale within scripts embedded into the page
+	let dateFormat = 'DD/MM/YYYY';
+	$('script').each(function(index) {
+		let scriptContents = $(this).text();
+		if (scriptContents.indexOf('&quot;localeCode&quot;:&quot;en_US&quot;') !== -1) {
+			console.log('Date format switched to US');
+			dateFormat = 'MM/DD/YYYY';
+		}
+	});
+	
+
 	function check() {
-		console.log('running');
 		var title = $('[data-automation-id="pageHeaderTitleText"], [data-automation-id="tabLabel"]');
 		var grid = $('.wd-SuperGrid');
 		var calendar = $('.hello-week');
@@ -23,13 +34,12 @@
 	function execute() {
 		let mapping = findColumns();
 		let dates = findDates(mapping);
-		console.log(mapping, dates);
 		$('.wd-SuperGrid').parent().before(`<div class="hello-week"></div>`);
 		let calendar = new HelloWeek({
 			selector: '.hello-week',
 			lang: 'en',
 			langFolder: chrome.extension.getURL('langs/'),
-			format: 'DD/MM/YYYY',
+			format: dateFormat,
 			weekStart: 1,
 			daysHighlight: [dates]
 		});
@@ -69,7 +79,7 @@
 		}
 		rows.each(function(index) {
 			let cells = $(this).find('th, td');
-			let readDay = moment($(cells[mapping.date]).text(), [/*"MM/DD/YYYY", */"DD/MM/YYYY"]);
+			let readDay = moment($(cells[mapping.date]).text(), [dateFormat]);
 			let day = readDay.format('YYYY-MM-DD');
 
 			if ($(cells[mapping.status]).text() === "Approved" || mapping.status === undefined) {

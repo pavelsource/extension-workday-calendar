@@ -1,6 +1,6 @@
 {
   "name": "Workday Calendar",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Workday Calendar for My Absence",
   "permissions": ["activeTab"],
   "web_accessible_resources": [
