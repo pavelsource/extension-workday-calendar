@@ -1,23 +1,30 @@
 
 
 (function() {
-    var checkExist = setInterval(function() {
-		var title = $('[data-automation-id="pageHeaderTitleText"]');
-        if (title.length) {           
-		   clearInterval(checkExist);
-		   if(title.text() === 'My Absence' || title.text() === 'My Time Off') {
-		   	execute();
-		   }
+	let interval = setInterval(check, 1000); 
+	const titles = [
+		'My Absence',
+		'My Time Off',
+		'Time Off and Leave Requests'
+	];
+
+	function check() {
+		console.log('running');
+		var title = $('[data-automation-id="pageHeaderTitleText"], [data-automation-id="tabLabel"]');
+		var grid = $('.wd-SuperGrid');
+		var calendar = $('.hello-week');
+        if (title.length && grid.length && !calendar.length) {
+			if(titles.indexOf($(title[0]).text()) !== -1) {
+				execute();
+			}
         }
-	}, 100);
+	}
 	
 	function execute() {
 		let mapping = findColumns();
 		let dates = findDates(mapping);
-		console.log('mapping', mapping);
-		console.log('dates', dates);
-
-		$('.wd-SuperGrid').parent().before(`<div><div class="hello-week"></div></div>`);
+		console.log(mapping, dates);
+		$('.wd-SuperGrid').parent().before(`<div class="hello-week"></div>`);
 		let calendar = new HelloWeek({
 			selector: '.hello-week',
 			lang: 'en',
@@ -26,9 +33,6 @@
 			weekStart: 1,
 			daysHighlight: [dates]
 		});
-
-
-
 	}
 
 	function findColumns() {
@@ -65,10 +69,10 @@
 		}
 		rows.each(function(index) {
 			let cells = $(this).find('th, td');
-			let readDay = moment($(cells[mapping.date]).text(), ["MM/DD/YYYY", "DD/MM/YYYY"]);
+			let readDay = moment($(cells[mapping.date]).text(), [/*"MM/DD/YYYY", */"DD/MM/YYYY"]);
 			let day = readDay.format('YYYY-MM-DD');
 
-			if ($(cells[mapping.status]).text() === "Approved") {
+			if ($(cells[mapping.status]).text() === "Approved" || mapping.status === undefined) {
 			    let requestedQy = parseInt($(cells[mapping.quantity]).text());
 			    if (requestedQy > 0 && $.inArray(day, cancelledDays) < 0) {
 			        dates.days.push(day);
