@@ -5,7 +5,7 @@
 		var title = $('[data-automation-id="pageHeaderTitleText"]');
         if (title.length) {           
 		   clearInterval(checkExist);
-		   if(title.text() === 'My Absence') {
+		   if(title.text() === 'My Absence' || title.text() === 'My Time Off') {
 		   	execute();
 		   }
         }
