@@ -5,7 +5,7 @@
 		var title = $('[data-automation-id="pageHeaderTitleText"]');
         if (title.length) {           
 		   clearInterval(checkExist);
-		   if(title.text() === 'My Absence') {
+		   if(title.text() === 'My Absence' || title.text() === 'My Time Off') {
 		   	execute();
 		   }
         }
@@ -55,6 +55,7 @@
 	function findDates(mapping) {
 		let table = $('.mainTable');
 		let rows = table.find('tr:not(:first)');
+		let cancelledDays = [];
 
 		let dates = {
 			days: [],
@@ -64,9 +65,23 @@
 		}
 		rows.each(function(index) {
 			let cells = $(this).find('th, td');
-			let dayParts = $(cells[mapping.date]).text().split('/');
-			let day = dayParts[2] + '-' + dayParts[1] + '-' + dayParts[0];
-			dates.days.push(day);
+			let readDay = moment($(cells[mapping.date]).text(), ["MM/DD/YYYY", "DD/MM/YYYY"]);
+			let day = readDay.format('YYYY-MM-DD');
+
+			if ($(cells[mapping.status]).text() === "Approved") {
+			    let requestedQy = parseInt($(cells[mapping.quantity]).text());
+			    if (requestedQy > 0 && $.inArray(day, cancelledDays) < 0) {
+			        dates.days.push(day);
+			        return true;
+			    }
+
+			    let dayIndex = $.inArray(day, dates.days);
+			    if (dayIndex >= 0) {
+			        dates.days.splice(dayIndex, 1);
+			    } else {
+			        cancelledDays.push(day);
+			    }
+			}
 		});
 
 		return dates;

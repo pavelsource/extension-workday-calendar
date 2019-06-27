@@ -17,6 +17,7 @@
       "js": [
         "vendor/jquery.min.js",
         "vendor/hello.week.min.js",
+        "vendor/moment.min.js",
         "index.js"
       ],
       "run_at": "document_end"
