@@ -1,6 +1,7 @@
 
 
 (function() {
+	let colorScheme = ['#6495ED', '#F08080', '#F7CE5B', '#F7B05B', '#00B28C'];
 	let interval = setInterval(check, 1000); 
 	const titles = [
 		'My Absence',
@@ -41,7 +42,7 @@
 			langFolder: chrome.extension.getURL('langs/'),
 			format: dateFormat,
 			weekStart: 1,
-			daysHighlight: [dates]
+			daysHighlight: dates
 		});
 	}
 
@@ -70,28 +71,30 @@
 		let table = $('.mainTable');
 		let rows = table.find('tr:not(:first)');
 		let cancelledDays = [];
+		let dates = [];
 
-		let dates = {
-			days: [],
-			backgroundColor: '#6495ed',
-			color: '#fff',
-			title: ''
-		}
 		rows.each(function(index) {
 			let cells = $(this).find('th, td');
 			let readDay = moment($(cells[mapping.date]).text(), [dateFormat]);
 			let day = readDay.format('YYYY-MM-DD');
 
 			if ($(cells[mapping.status]).text() === "Approved" || mapping.status === undefined) {
+			    let dateType = $(cells[mapping.type]).text();
+			    let datesGroupIndex = dates.findIndex(date => date.title.indexOf(dateType) >= 0);
+			    if (datesGroupIndex < 0) {
+					datesGroupIndex = dates.length;
+			        dates.push(getDatesGroup(dateType));
+			    }
+
 			    let requestedQy = parseInt($(cells[mapping.quantity]).text());
 			    if (requestedQy > 0 && $.inArray(day, cancelledDays) < 0) {
-			        dates.days.push(day);
+			        dates[datesGroupIndex].days.push(day);
 			        return true;
 			    }
 
-			    let dayIndex = $.inArray(day, dates.days);
+			    let dayIndex = $.inArray(day, dates[datesGroupIndex].days);
 			    if (dayIndex >= 0) {
-			        dates.days.splice(dayIndex, 1);
+			        dates[datesGroupIndex].days.splice(dayIndex, 1);
 			    } else {
 			        cancelledDays.push(day);
 			    }
@@ -100,5 +103,14 @@
 
 		return dates;
 	}
+
+    function getDatesGroup(groupName){
+	  return {
+		days: [],
+		backgroundColor: colorScheme.shift(),
+		color: '#fff',
+		title: groupName
+	  };
+    }
 
 })();
