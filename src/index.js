@@ -72,6 +72,7 @@
 		let rows = table.find('tr:not(:first)');
 		let cancelledDays = [];
 		let dates = [];
+		let colors = [...colorScheme];
 
 		rows.each(function(index) {
 			let cells = $(this).find('th, td');
@@ -83,7 +84,7 @@
 			    let datesGroupIndex = dates.findIndex(date => date.title.indexOf(dateType) >= 0);
 			    if (datesGroupIndex < 0) {
 					datesGroupIndex = dates.length;
-			        dates.push(getDatesGroup(dateType));
+			        dates.push(getDatesGroup(dateType, colors));
 			    }
 
 			    let requestedQy = parseInt($(cells[mapping.quantity]).text());
@@ -104,10 +105,10 @@
 		return dates;
 	}
 
-    function getDatesGroup(groupName){
+    function getDatesGroup(groupName, colors){
 	  return {
 		days: [],
-		backgroundColor: colorScheme.shift(),
+		backgroundColor: colors.shift(),
 		color: '#fff',
 		title: groupName
 	  };
