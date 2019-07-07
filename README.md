@@ -6,6 +6,13 @@ Extension for Workday SaaS software, which adds a calendar to the absence pages.
 
 ![alt Workday Calendar Extension](https://raw.githubusercontent.com/ashkue/extension-workday-calendar/master/readme-example.png)
 
+## Features
+
+* Calendar is available for `My Absence`, `My Time Off` and `Time Off and Leave Requests` pages
+* Support for `en-US` and `en-UK` locales (date format and first day of the week)
+* Different colors for each type of events in the calendar
+* Correct calculation for cancelled events
+
 ## Install from the Chrome Marketplace
 
 This extension can be downloaded directly from Chrome Web Store: https://chrome.google.com/webstore/detail/workday-calendar/acpklmphjdfgjcdodlhmbekfmioagohg

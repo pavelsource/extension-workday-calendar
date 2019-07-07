@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.3 (2019-07-07)
+
+### Bug Fixes
+
+* Fixed first day of the week for `en-US` locale, now it is Sunday
+
+### Features
+
+* Added different colors for different types of items in the calendar
+* Added legend for different colors in the calendar
+
 ## 1.0.2 (2019-06-27)
 
 ### Bug Fixes
