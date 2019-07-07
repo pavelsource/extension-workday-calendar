@@ -1,6 +1,30 @@
-.hello-week {
+.calendar-container {
     max-width: 800px;
+    margin: 1em auto;
+    border: 1px solid #ccc;
+    border-radius: 1em;
 }
-.hello-week .day {
+
+.calendar-widget .day {
     padding: 1em 0;
+}
+
+.calendar-legend { 
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1em;
+}
+
+.calendar-legend li {
+    margin: 1em 2em 1em 1em;
+}
+
+.calendar-legend span { 
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    width: 1em; 
+    height: 1em;
+    margin-right: 0.5em; 
 }

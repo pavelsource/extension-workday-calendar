@@ -37,14 +37,25 @@
 	function execute() {
 		let mapping = findColumns();
 		let dates = findDates(mapping);
-		$('.wd-SuperGrid').parent().before(`<div class="hello-week"></div>`);
+		$('.wd-SuperGrid').parent().before(`
+			<div class="calendar-container">
+				<div class="calendar-widget"></div>
+				<ul class="calendar-legend"></ul>
+			</div>
+		`);
 		let calendar = new HelloWeek({
-			selector: '.hello-week',
+			selector: '.calendar-widget',
 			lang: 'en',
 			langFolder: chrome.extension.getURL('langs/'),
 			format: dateFormat,
 			weekStart: weekStart,
 			daysHighlight: dates
+		});
+
+		dates.forEach(function(date) {
+			$('.calendar-legend').append(`
+				<li><span style="background-color: ${date.backgroundColor};"></span> ${date.title}</li>
+			`);
 		});
 	}
 
@@ -115,5 +126,4 @@
 		title: groupName
 	  };
     }
-
 })();
