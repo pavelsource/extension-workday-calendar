@@ -12,11 +12,13 @@
 	// unfortunately extension does not have access to workday's global variable
 	// we have to search for locale within scripts embedded into the page
 	let dateFormat = 'DD/MM/YYYY';
+	let weekStart = 1;
 	$('script').each(function(index) {
 		let scriptContents = $(this).text();
 		if (scriptContents.indexOf('&quot;localeCode&quot;:&quot;en_US&quot;') !== -1) {
 			console.log('Date format switched to US');
 			dateFormat = 'MM/DD/YYYY';
+			weekStart = 0;
 		}
 	});
 	
@@ -41,7 +43,7 @@
 			lang: 'en',
 			langFolder: chrome.extension.getURL('langs/'),
 			format: dateFormat,
-			weekStart: 1,
+			weekStart: weekStart,
 			daysHighlight: dates
 		});
 	}
