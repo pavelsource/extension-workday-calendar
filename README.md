@@ -9,7 +9,7 @@ Extension for Workday SaaS software, which adds a calendar to the absence pages.
 ## Features
 
 * Calendar is available for `My Absence`, `My Time Off` and `Time Off and Leave Requests` pages
-* Support for `en-US` and `en-UK` locales (date format and first day of the week)
+* Support for `en-US` and `en-GB` locales (date format and first day of the week)
 * Different colors for each type of events in the calendar
 * Correct calculation for cancelled events
 
