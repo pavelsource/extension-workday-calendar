@@ -36,11 +36,13 @@
 	}
 	
 	function execute() {
+		let checkpointTableLoader = 1;
 		let mapping = findColumns();
 		let dates = findDates(mapping);
 		$('.wd-SuperGrid').parent().before(`
 			<div class="calendar-container">
 				<div class="calendar-widget"></div>
+				<div class="calendar-message"></div>
 				<ul class="calendar-legend"></ul>
 			</div>
 		`);
@@ -51,7 +53,44 @@
 			format: dateFormat,
 			weekStart: weekStart,
 			minDate: getMinDate(dates),
-			daysHighlight: dates
+			daysHighlight: dates,
+			onLoad: () => {
+				let tableTitle = $('.wd-SuperGrid span[data-automation-id="gridTitleLabel"]').text();
+				let tableId = $('div[id^="wd-SuperGrid"]').attr('id');
+				let $msgContainer = $('.calendar-message');
+				// Fill the notification message
+				$msgContainer.append(`<span>Scroll down table <a href="#` + tableId + `">` + tableTitle + `</a> 
+					to load older dates</span>`);
+
+				// Bind event scroll down on table to refresh calendar data
+				$('div.WMMG').on('mousewheel DOMMouseScroll', function(event){
+					if (event.originalEvent.wheelDelta <= 0 || event.originalEvent.detail >= 0) {
+						let mainTableLength = $('.dataTable[data-automation-id^="MainTable-"]').length;
+						setTimeout(function() {
+							if (mainTableLength > 1 && checkpointTableLoader !== mainTableLength) {
+								// Refresh calendar data
+								let currentDates = findDates(mapping);
+								calendar.setDaysHighlight(currentDates);
+								calendar.setMinDate(getMinDate(currentDates));
+								calendar.update();
+								// Hide notification message
+								$msgContainer.toggleClass('show');
+								// Update checkpoint
+								checkpointTableLoader = mainTableLength;
+							}
+						}, 400);
+					}
+				});
+			},
+			onNavigation: () => {
+				let minMonth = moment(calendar.options.minDate).month() +1; // Jan = 0
+				let $msgContainer = $('.calendar-message');
+				if (calendar.getMonth() === minMonth) {
+				   $msgContainer.addClass('show');
+				} else {
+				   $msgContainer.removeClass('show');
+				}
+			}
 		});
 
 		dates.forEach(function(date) {

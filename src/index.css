@@ -28,3 +28,23 @@
     height: 1em;
     margin-right: 0.5em; 
 }
+
+.calendar-message {
+    text-align: -webkit-center;
+    font-size: small;
+    margin-top: inherit;
+    background-color: #8DC7C1;
+    color: #2E716A;
+    padding: 5px 0 5px 0;
+    display: none;
+}
+
+.calendar-message.show {
+    display: block;
+}
+
+.calendar-message span a {
+    text-decoration: none !important;
+    font-weight: 700;
+    color: #27615B;
+}
