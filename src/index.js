@@ -97,7 +97,7 @@
 			    let datesGroupIndex = dates.findIndex(date => date.title.indexOf(dateType) >= 0);
 			    if (datesGroupIndex < 0) {
 					datesGroupIndex = dates.length;
-			        dates.push(getDatesGroup(dateType, colors));
+			        dates.push(getDatesGroup(dateType, colors[datesGroupIndex]));
 			    }
 
 			    let requestedQy = parseInt($(cells[mapping.quantity]).text());
@@ -118,10 +118,10 @@
 		return dates;
 	}
 
-    function getDatesGroup(groupName, colors){
+    function getDatesGroup(groupName, groupColor) {
 	  return {
 		days: [],
-		backgroundColor: colors.shift(),
+		backgroundColor: groupColor,
 		color: '#fff',
 		title: groupName
 	  };
