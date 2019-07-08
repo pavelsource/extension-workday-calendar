@@ -24,22 +24,25 @@
 	
 
 	function check() {
-		var title = $('[data-automation-id="pageHeaderTitleText"], [data-automation-id="tabLabel"]');
-		var grid = $('.wd-SuperGrid');
-		var calendar = $('.hello-week');
-        if (title.length && grid.length && !calendar.length) {
-			if(titles.indexOf($(title[0]).text()) !== -1) {
+		var $title = $('[data-automation-id="pageHeaderTitleText"], [data-automation-id="tabLabel"]');
+		var $grid = $('.wd-SuperGrid');
+		var $calendar = $('.hello-week');
+
+		if ($title.length && $grid.length && !$calendar.length) {
+			if (titles.indexOf($($title[0]).text()) !== -1) {
 				execute();
 			}
         }
 	}
 	
 	function execute() {
+		let checkpointTableLoader = 1;
 		let mapping = findColumns();
 		let dates = findDates(mapping);
 		$('.wd-SuperGrid').parent().before(`
 			<div class="calendar-container">
 				<div class="calendar-widget"></div>
+				<div class="calendar-message"></div>
 				<ul class="calendar-legend"></ul>
 			</div>
 		`);
@@ -49,7 +52,45 @@
 			langFolder: chrome.extension.getURL('langs/'),
 			format: dateFormat,
 			weekStart: weekStart,
-			daysHighlight: dates
+			minDate: getMinDate(dates),
+			daysHighlight: dates,
+			onLoad: () => {
+				let tableTitle = $('.wd-SuperGrid span[data-automation-id="gridTitleLabel"]').text();
+				let tableId = $('div[id^="wd-SuperGrid"]').attr('id');
+				let $msgContainer = $('.calendar-message');
+				// Fill the notification message
+				$msgContainer.append(`<span>Scroll down table <a href="#` + tableId + `">` + tableTitle + `</a> 
+					to load older dates</span>`);
+
+				// Bind event scroll down on table to refresh calendar data
+				$('div.WMMG').on('mousewheel DOMMouseScroll', function(event){
+					if (event.originalEvent.wheelDelta <= 0 || event.originalEvent.detail >= 0) {
+						let mainTableLength = $('.dataTable[data-automation-id^="MainTable-"]').length;
+						setTimeout(function() {
+							if (mainTableLength > 1 && checkpointTableLoader !== mainTableLength) {
+								// Refresh calendar data
+								let currentDates = findDates(mapping);
+								calendar.setDaysHighlight(currentDates);
+								calendar.setMinDate(getMinDate(currentDates));
+								calendar.update();
+								// Hide notification message
+								$msgContainer.toggleClass('show');
+								// Update checkpoint
+								checkpointTableLoader = mainTableLength;
+							}
+						}, 400);
+					}
+				});
+			},
+			onNavigation: () => {
+				let minMonth = moment(calendar.options.minDate).month() +1; // Jan = 0
+				let $msgContainer = $('.calendar-message');
+				if (calendar.getMonth() === minMonth) {
+				   $msgContainer.addClass('show');
+				} else {
+				   $msgContainer.removeClass('show');
+				}
+			}
 		});
 
 		dates.forEach(function(date) {
@@ -60,8 +101,8 @@
 	}
 
 	function findColumns() {
-		let table = $('.mainTable');
-		let rows = table.find('tr');
+		let $table = $('.mainTable');
+		let rows = $table.find('tr');
 
 		let mapping = {};
 		$(rows[0]).find('th').each(function(index) {
@@ -81,8 +122,8 @@
 	}
 
 	function findDates(mapping) {
-		let table = $('.mainTable');
-		let rows = table.find('tr:not(:first)');
+		let $table = $('.mainTable');
+		let rows = $table.find('tr:not(:first)');
 		let cancelledDays = [];
 		let dates = [];
 		let colors = [...colorScheme];
@@ -97,7 +138,7 @@
 			    let datesGroupIndex = dates.findIndex(date => date.title.indexOf(dateType) >= 0);
 			    if (datesGroupIndex < 0) {
 					datesGroupIndex = dates.length;
-			        dates.push(getDatesGroup(dateType, colors));
+			        dates.push(getDatesGroup(dateType, colors[datesGroupIndex]));
 			    }
 
 			    let requestedQy = parseInt($(cells[mapping.quantity]).text());
@@ -118,10 +159,18 @@
 		return dates;
 	}
 
-    function getDatesGroup(groupName, colors){
+    function getMinDate(dates) {
+	  let days = $.map(dates, function(date, i) {
+		return date.days;
+	  }).sort();
+
+	  return days[0];
+    }  
+
+    function getDatesGroup(groupName, groupColor) {
 	  return {
 		days: [],
-		backgroundColor: colors.shift(),
+		backgroundColor: groupColor,
 		color: '#fff',
 		title: groupName
 	  };
