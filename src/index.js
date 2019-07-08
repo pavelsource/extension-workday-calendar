@@ -26,8 +26,8 @@
 	function check() {
 		var $title = $('[data-automation-id="pageHeaderTitleText"], [data-automation-id="tabLabel"]');
 		var $grid = $('.wd-SuperGrid');
-		var $calendar = $('.hello-week');
-
+		var $calendar = $('.calendar-widget');
+		
 		if ($title.length && $grid.length && !$calendar.length) {
 			if (titles.indexOf($($title[0]).text()) !== -1) {
 				execute();
@@ -83,9 +83,10 @@
 				});
 			},
 			onNavigation: () => {
-				let minMonth = moment(calendar.options.minDate).month() +1; // Jan = 0
+				let minDate = moment(calendar.options.minDate);
+				let minMonth = minDate.month() +1; // Jan = 0
 				let $msgContainer = $('.calendar-message');
-				if (calendar.getMonth() === minMonth) {
+				if (calendar.getYear() === minDate.year() && calendar.getMonth() === minMonth) {
 				   $msgContainer.addClass('show');
 				} else {
 				   $msgContainer.removeClass('show');
