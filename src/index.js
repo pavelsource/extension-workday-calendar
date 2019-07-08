@@ -49,6 +49,7 @@
 			langFolder: chrome.extension.getURL('langs/'),
 			format: dateFormat,
 			weekStart: weekStart,
+			minDate: getMinDate(dates),
 			daysHighlight: dates
 		});
 
@@ -117,6 +118,14 @@
 
 		return dates;
 	}
+
+    function getMinDate(dates) {
+	  let days = $.map(dates, function(date, i) {
+		return date.days;
+	  }).sort();
+
+	  return days[0];
+    }  
 
     function getDatesGroup(groupName, groupColor) {
 	  return {
