@@ -46,6 +46,7 @@
 				<ul class="calendar-legend"></ul>
 			</div>
 		`);
+		let $msgContainer = $('.calendar-message');
 		let calendar = new HelloWeek({
 			selector: '.calendar-widget',
 			lang: 'en',
@@ -57,7 +58,6 @@
 			onLoad: () => {
 				let tableTitle = $('.wd-SuperGrid span[data-automation-id="gridTitleLabel"]').text();
 				let tableId = $('div[id^="wd-SuperGrid"]').attr('id');
-				let $msgContainer = $('.calendar-message');
 				// Fill the notification message
 				$msgContainer.append(`<span>Scroll down table <a href="#` + tableId + `">` + tableTitle + `</a> 
 					to load older dates</span>`);
@@ -74,7 +74,7 @@
 								calendar.setMinDate(getMinDate(currentDates));
 								calendar.update();
 								// Hide notification message
-								$msgContainer.toggleClass('show');
+								$msgContainer.toggleClass('show', false);
 								// Update checkpoint
 								checkpointTableLoader = mainTableLength;
 							}
@@ -85,12 +85,8 @@
 			onNavigation: () => {
 				let minDate = moment(calendar.options.minDate);
 				let minMonth = minDate.month() +1; // Jan = 0
-				let $msgContainer = $('.calendar-message');
-				if (calendar.getYear() === minDate.year() && calendar.getMonth() === minMonth) {
-				   $msgContainer.addClass('show');
-				} else {
-				   $msgContainer.removeClass('show');
-				}
+				let show = calendar.getYear() === minDate.year() && calendar.getMonth() === minMonth;
+				$msgContainer.toggleClass('show', show);
 			}
 		});
 
