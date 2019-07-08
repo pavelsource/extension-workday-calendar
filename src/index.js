@@ -24,11 +24,12 @@
 	
 
 	function check() {
-		var title = $('[data-automation-id="pageHeaderTitleText"], [data-automation-id="tabLabel"]');
-		var grid = $('.wd-SuperGrid');
-		var calendar = $('.hello-week');
-        if (title.length && grid.length && !calendar.length) {
-			if(titles.indexOf($(title[0]).text()) !== -1) {
+		var $title = $('[data-automation-id="pageHeaderTitleText"], [data-automation-id="tabLabel"]');
+		var $grid = $('.wd-SuperGrid');
+		var $calendar = $('.hello-week');
+
+		if ($title.length && $grid.length && !$calendar.length) {
+			if (titles.indexOf($($title[0]).text()) !== -1) {
 				execute();
 			}
         }
@@ -61,8 +62,8 @@
 	}
 
 	function findColumns() {
-		let table = $('.mainTable');
-		let rows = table.find('tr');
+		let $table = $('.mainTable');
+		let rows = $table.find('tr');
 
 		let mapping = {};
 		$(rows[0]).find('th').each(function(index) {
@@ -82,8 +83,8 @@
 	}
 
 	function findDates(mapping) {
-		let table = $('.mainTable');
-		let rows = table.find('tr:not(:first)');
+		let $table = $('.mainTable');
+		let rows = $table.find('tr:not(:first)');
 		let cancelledDays = [];
 		let dates = [];
 		let colors = [...colorScheme];
