@@ -1,6 +1,6 @@
 {
   "name": "extension-workday-calendar",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "repository": "https://github.com/ashkue/extension-workday-calendar",
   "main": "index.js",

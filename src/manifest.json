@@ -1,6 +1,6 @@
 {
   "name": "Workday Calendar",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Workday Calendar for 'My Absence', 'My Time Off' and 'Time Off and Leave Requests' pages",
   "permissions": ["activeTab"],
   "web_accessible_resources": [
