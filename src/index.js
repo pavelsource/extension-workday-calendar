@@ -77,6 +77,8 @@
 								$msgContainer.toggleClass('show', false);
 								// Update checkpoint
 								checkpointTableLoader = mainTableLength;
+								// Update legend
+								updateLegend(currentDates);
 							}
 						}, 400);
 					}
@@ -90,11 +92,7 @@
 			}
 		});
 
-		dates.forEach(function(date) {
-			$('.calendar-legend').append(`
-				<li><span style="background-color: ${date.backgroundColor};"></span> ${date.title}</li>
-			`);
-		});
+		updateLegend(dates);
 	}
 
 	function findColumns() {
@@ -171,5 +169,15 @@
 		color: '#fff',
 		title: groupName
 	  };
+	}
+
+	function updateLegend(dates) {
+	  // Clean current content before filling it again
+	  $('.calendar-legend').empty();
+	  dates.forEach(function (date) {
+		$('.calendar-legend').append(`
+		  <li><span style="background-color: ${date.backgroundColor};"></span> ${date.title}</li>
+		`);
+	  });
 	}
 })();
