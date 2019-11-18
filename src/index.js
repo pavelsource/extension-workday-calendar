@@ -63,7 +63,7 @@
 					to load older dates</span>`);
 
 				// Bind event scroll down on table to refresh calendar data
-				$('div.WMMG').on('mousewheel DOMMouseScroll', function(event){
+				$('div[data-automation-id="VisibleGrid"]').parent().on('mousewheel DOMMouseScroll', function (event) {
 					if (event.originalEvent.wheelDelta <= 0 || event.originalEvent.detail >= 0) {
 						let mainTableLength = $('.dataTable[data-automation-id^="MainTable-"]').length;
 						setTimeout(function() {
@@ -171,5 +171,5 @@
 		color: '#fff',
 		title: groupName
 	  };
-    }
+	}
 })();
