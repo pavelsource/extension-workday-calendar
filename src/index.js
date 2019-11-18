@@ -1,7 +1,7 @@
 
 
 (function() {
-	let colorScheme = ['#6495ED', '#F08080', '#F7CE5B', '#F7B05B', '#00B28C'];
+	let colorScheme = ['#6495ED', '#F08080', '#F7CE5B', '#F7B05B', '#00B28C', '#95ED64', '#7864ED', '#F8EA8C'];
 	let interval = setInterval(check, 1000); 
 	const titles = [
 		'My Absence',
