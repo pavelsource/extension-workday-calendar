@@ -1,7 +1,7 @@
 
 
 (function() {
-	let colorScheme = ['#6495ED', '#F08080', '#F7CE5B', '#F7B05B', '#00B28C'];
+	let colorScheme = ['#6495ED', '#F08080', '#F7CE5B', '#F7B05B', '#00B28C', '#95ED64', '#7864ED', '#F8EA8C'];
 	let interval = setInterval(check, 1000); 
 	const titles = [
 		'My Absence',
@@ -63,7 +63,7 @@
 					to load older dates</span>`);
 
 				// Bind event scroll down on table to refresh calendar data
-				$('div.WMMG').on('mousewheel DOMMouseScroll', function(event){
+				$('div[data-automation-id="VisibleGrid"]').parent().on('mousewheel DOMMouseScroll', function (event) {
 					if (event.originalEvent.wheelDelta <= 0 || event.originalEvent.detail >= 0) {
 						let mainTableLength = $('.dataTable[data-automation-id^="MainTable-"]').length;
 						setTimeout(function() {
@@ -77,6 +77,8 @@
 								$msgContainer.toggleClass('show', false);
 								// Update checkpoint
 								checkpointTableLoader = mainTableLength;
+								// Update legend
+								updateLegend(currentDates);
 							}
 						}, 400);
 					}
@@ -90,11 +92,7 @@
 			}
 		});
 
-		dates.forEach(function(date) {
-			$('.calendar-legend').append(`
-				<li><span style="background-color: ${date.backgroundColor};"></span> ${date.title}</li>
-			`);
-		});
+		updateLegend(dates);
 	}
 
 	function findColumns() {
@@ -171,5 +169,15 @@
 		color: '#fff',
 		title: groupName
 	  };
-    }
+	}
+
+	function updateLegend(dates) {
+	  // Clean current content before filling it again
+	  $('.calendar-legend').empty();
+	  dates.forEach(function (date) {
+		$('.calendar-legend').append(`
+		  <li><span style="background-color: ${date.backgroundColor};"></span> ${date.title}</li>
+		`);
+	  });
+	}
 })();
