@@ -1,10 +1,20 @@
 # Changelog
 
+## 1.0.5 (2019-11-26)
+
+### Bug Fixes
+
+* Fixed legend reload after new dates are loaded (@edro15)
+
+### Features
+
+* Added more colors for the legend to support more types of calendar events (@edro15)
+
 ## 1.0.4 (2019-07-09)
 
 ### Bug Fixes
 
-* Fixed extra calendar initiation 
+* Fixed extra calendar initiation
 
 ### Features
 
