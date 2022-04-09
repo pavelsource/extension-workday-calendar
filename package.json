@@ -10,7 +10,7 @@
   "author": "Pavel Morshenyuk",
   "license": "MIT",
   "dependencies": {
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "hello-week": "^2.10.2",
     "jquery": "^3.5.0"
   }
